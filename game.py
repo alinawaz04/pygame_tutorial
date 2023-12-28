@@ -11,6 +11,8 @@ class Game:
 
         # set resolution of window
         self.screen = pygame.display.set_mode((640, 480))
+        # generates empty surface for rendering to therefore scale onto screen creating pixel art effect
+        self.display = pygame.Surface((320, 240))
 
         self.clock = pygame.time.Clock()
 
@@ -24,11 +26,11 @@ class Game:
 
     def run(self):
         while True:
-            self.screen.fill((14,219,248))
+            self.display.fill((14,219,248))
 
             # updating x value of postion (right and left movement)
             self.player.update(((self.movement[1] - self.movement[0]), 0))
-            self.player.render(self.screen)
+            self.player.render(self.display)
 
             for event in pygame.event.get():
 
@@ -49,8 +51,10 @@ class Game:
                     if event.key == pygame.K_d:                        
                         self.movement[1] = False
                 
+            # blit display onto screen, then scale to size of screen, scaling up size of image
+            self.screen.blit(pygame.transform.scale(self.display, self.screen.get_size()), (0, 0))
+            
             pygame.display.update()
-
             # set fps to 60
             self.clock.tick(60)
 
