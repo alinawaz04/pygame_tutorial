@@ -1,7 +1,8 @@
 import pygame
 import sys
-from scripts.utils import load_image
+from scripts.utils import load_image, load_images
 from scripts.entities import PhysicsEntity
+from scripts.tilemap import Tilemap
 
 class Game:
     def __init__(self):
@@ -19,14 +20,23 @@ class Game:
         self.movement = [False, False]
 
         self.assets = {
+            "decor": load_images("tiles/decor"),
+            "grass": load_images("tiles/grass"),
+            "large_decor": load_images("tiles/large_decor"),
+            "spawners": load_images("tiles/spawners"),
+            "stone": load_images("tiles/stone"),
             "player": load_image("entities/player.png")
         }
 
         self.player = PhysicsEntity(self, "player", (50, 50), (8, 15))
 
+        self.tilemap = Tilemap(self, tile_size = 16)
+
     def run(self):
         while True:
             self.display.fill((14,219,248))
+
+            self.tilemap.render(self.display)
 
             # updating x value of postion (right and left movement)
             self.player.update(((self.movement[1] - self.movement[0]), 0))
